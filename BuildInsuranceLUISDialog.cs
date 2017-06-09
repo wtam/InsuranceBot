@@ -70,7 +70,7 @@ namespace InsuranceBOT
                 await context.PostAsync("I’m not sure what you want.");
             }
             context.Wait(MessageReceived);
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }

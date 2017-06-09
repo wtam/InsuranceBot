@@ -40,5 +40,24 @@ namespace InsuranceBOT
             }
         }
 
+        // Override to also include the knowledgebase question with the answer on confident matches
+
+        protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults results)
+        {
+            if (results.Answers.Count > 0)
+            {
+                var response = "Here is the match from FAQ:  \r\n  Q: " + results.Answers.First().Questions.First() + "  \r\n A: " + results.Answers.First().Answer;
+                await context.PostAsync(response);
+            }
+        }
+
+        // Override to log matched Q&A before ending the dialog
+        protected override async Task DefaultWaitNextMessageAsync(IDialogContext context, IMessageActivity message, QnAMakerResults results)
+        {
+            Console.WriteLine("KB Question: " + results.Answers.First().Questions.First());
+            Console.WriteLine("KB Answer: " + results.Answers.First().Answer);
+            await base.DefaultWaitNextMessageAsync(context, message, results);
+        }
+
     }  //FAQDialog
 }  //InsuranceBot

@@ -4,10 +4,9 @@ using Microsoft.Bot.Builder.FormFlow;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+using Microsoft.Bot.Connector;
+using System.Threading;
 
 namespace InsuranceBOT
 {
@@ -27,7 +26,7 @@ namespace InsuranceBOT
                 FormOptions.PromptInStart,
                 result.Entities);
             context.Call<LossForm>(form, LossFormComplete);
-           //context.Wait(this.MessageReceived);
+            //context.Wait(this.MessageReceived);
         }
 
         private async Task LossFormComplete(IDialogContext context, IAwaitable<LossForm> result)
@@ -54,12 +53,25 @@ namespace InsuranceBOT
         }
 
         [LuisIntent("None")]
-        public async Task NoneHandler(IDialogContext context, LuisResult result)
+        public async Task NoneHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
         {
-            await context.PostAsync("I'm sorry, I don't understand");
-            //pass to human agent?...........
-            context.Wait(MessageReceived);
-
+            //falling back to QnAMakerDialog from a LUIS dialog if no intents match
+            var qnadialog = new FAQDialog();
+            var messageToForward = await message;
+            await context.Forward(qnadialog, AfterQnADialog, messageToForward, CancellationToken.None);
         }
+
+        private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
+        {
+            var answerFound = await result;
+            // we might want to send a message or take some action if no answer was found (false returned)
+            if (answerFound == null)
+            {
+                await context.PostAsync("I’m not sure what you want.");
+            }
+            context.Wait(MessageReceived);
+            throw new NotImplementedException();
+        }
+
     }
 }

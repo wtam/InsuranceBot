@@ -28,7 +28,6 @@ namespace InsuranceBOT
             await context.PostAsync($"I found an answer that might help...{result.Answer}.");
             context.Done(true);
         }*/
-
         
         protected override async Task QnAFeedbackStepAsync(IDialogContext context, QnAMakerResults qnaMakerResults)
         {

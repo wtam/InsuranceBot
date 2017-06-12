@@ -44,6 +44,7 @@ namespace InsuranceBOTDemo
             typeof(PostUnhandledExceptionToUser),
             typeof(LogPostToBot)
             ).InstancePerLifetimeScope();
+            builder.Update(Conversation.Container);
 
             if (activity.Type == ActivityTypes.Message)
             {

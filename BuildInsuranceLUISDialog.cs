@@ -67,9 +67,9 @@ namespace InsuranceBOT
             // we might want to send a message or take some action if no answer was found (false returned)
             if (answerFound.Equals(null))
             {
-                //await context.PostAsync("I’m not sure what you want.");
+                await context.PostAsync("I’m not sure what you want.");
             }          
-            //context.Wait(MessageReceived);
+            context.Wait(MessageReceived);
             //throw new NotImplementedException();
 
         }

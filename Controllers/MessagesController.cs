@@ -11,6 +11,9 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.FormFlow;
 using InsuranceBoT;
 using InsuranceBOT;
+using Autofac;
+using Microsoft.Bot.Builder.Autofac.Base;
+using Microsoft.Bot.Builder.Dialogs.Internals;
 
 namespace InsuranceBOTDemo
 {
@@ -29,6 +32,18 @@ namespace InsuranceBOTDemo
 
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+            //supress the exception msg, "sorry my bot code is having issue"
+            var builder = new ContainerBuilder();
+            builder.RegisterAdapterChain<IPostToBot>
+            (
+            typeof(EventLoopDialogTask),
+            typeof(SetAmbientThreadCulture),
+            typeof(PersistentDialogTask),
+            typeof(ExceptionTranslationDialogTask),
+            typeof(SerializeByConversation),
+            typeof(PostUnhandledExceptionToUser),
+            typeof(LogPostToBot)
+            ).InstancePerLifetimeScope();
 
             if (activity.Type == ActivityTypes.Message)
             {

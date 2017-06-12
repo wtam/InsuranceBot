@@ -57,19 +57,18 @@ namespace InsuranceBOT
         {
             //falling back to QnAMakerDialog from a LUIS dialog if no intents match
             var qnadialog = new FAQDialog();
-            //var messageToForward = await message;
-            //await context.Forward(qnadialog, AfterQnADialog, messageToForward, CancellationToken.None);
-            await context.Forward(qnadialog, AfterQnADialog, message, CancellationToken.None);
+            var messageToForward = await message;
+            await context.Forward(qnadialog, AfterQnADialog, messageToForward, CancellationToken.None);
         }
 
         private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
         {
             var answerFound = await result;
             // we might want to send a message or take some action if no answer was found (false returned)
-            if (answerFound.Equals(null))
-            {
-                await context.PostAsync("I’m not sure what you want.");
-            }          
+            //if (answerFound.Equals(null))
+            //{
+                //await context.PostAsync("I’m not sure what you want.");
+            //}          
             context.Wait(MessageReceived);
             //throw new NotImplementedException();
 

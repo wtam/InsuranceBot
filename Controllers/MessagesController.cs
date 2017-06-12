@@ -31,21 +31,7 @@ namespace InsuranceBOTDemo
         }
 
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
-        {
-            //supress the exception msg, "sorry my bot code is having issue"
-            var builder = new ContainerBuilder();
-            builder.RegisterAdapterChain<IPostToBot>
-            (
-            typeof(EventLoopDialogTask),
-            typeof(SetAmbientThreadCulture),
-            typeof(PersistentDialogTask),
-            typeof(ExceptionTranslationDialogTask),
-            typeof(SerializeByConversation),
-            typeof(PostUnhandledExceptionToUser),
-            typeof(LogPostToBot)
-            ).InstancePerLifetimeScope();
-            builder.Update(Conversation.Container);
-
+        {          
             if (activity.Type == ActivityTypes.Message)
             {
                 /// without LUIS 

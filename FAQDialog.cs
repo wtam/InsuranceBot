@@ -62,6 +62,7 @@ namespace InsuranceBOT
             {
                 var response = "Here is the match from FAQ:  \r\n  Q: " + results.Answers.First().Questions.First() + "  \r\n A: " + results.Answers.First().Answer;
                 await context.PostAsync(response);
+                context.Done(false);
             }
         }
 
@@ -71,6 +72,7 @@ namespace InsuranceBOT
             Console.WriteLine("KB Question: " + results.Answers.First().Questions.First());
             Console.WriteLine("KB Answer: " + results.Answers.First().Answer);
             await base.DefaultWaitNextMessageAsync(context, message, results);
+            context.Done(true);
         }
 
     }  //FAQDialog

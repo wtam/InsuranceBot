@@ -10,8 +10,8 @@ using System.Linq;
 namespace InsuranceBOT
 {
     [Serializable]
-    //[QnAMaker("21014d33da9a4762be6858acb4d4b335", "29ab0dd8-cab0-43e6-8128-fb5bcb41fa99","I don't understand this right now! Try another query!", 0.50, 3)]
-    [QnAMaker("21014d33da9a4762be6858acb4d4b335", "29ab0dd8-cab0-43e6-8128-fb5bcb41fa99")]
+    [QnAMaker("21014d33da9a4762be6858acb4d4b335", "29ab0dd8-cab0-43e6-8128-fb5bcb41fa99","I don't understand this right now! Try another query!", 0.50, 3)]
+    //[QnAMaker("21014d33da9a4762be6858acb4d4b335", "29ab0dd8-cab0-43e6-8128-fb5bcb41fa99")]
     public class FAQDialog : QnAMakerDialog
     {
         //falling back to QnAMakerDialog from a LUIS dialog if no intents match
@@ -27,7 +27,7 @@ namespace InsuranceBOT
         {
             await context.PostAsync($"I found an answer that might help...{result.Answer}.");
             context.Done(true);
-        }*/
+        } */
         
         protected override async Task QnAFeedbackStepAsync(IDialogContext context, QnAMakerResults qnaMakerResults)
         {
@@ -43,7 +43,6 @@ namespace InsuranceBOT
         } 
 
         // Override to also include the knowledgebase question with the answer on confident matches
-
         protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults results)
         {
             if (results.Answers.Count > 0)

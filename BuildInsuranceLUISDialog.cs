@@ -57,8 +57,9 @@ namespace InsuranceBOT
         {
             //falling back to QnAMakerDialog from a LUIS dialog if no intents match
             var qnadialog = new FAQDialog();
-            var messageToForward = await message;
-            await context.Forward(qnadialog, AfterQnADialog, messageToForward, CancellationToken.None);
+            //var messageToForward = await message;
+            //await context.Forward(qnadialog, AfterQnADialog, messageToForward, CancellationToken.None);
+            await context.Forward(qnadialog, AfterQnADialog, message, CancellationToken.None);
         }
 
         private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)

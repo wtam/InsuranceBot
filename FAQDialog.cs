@@ -30,6 +30,20 @@ namespace InsuranceBOT
         protected override async Task QnAFeedbackStepAsync(IDialogContext context, QnAMakerResults qnaMakerResults)
         {
             // responding with the top answer when score is above some threshold
+            /*if (qnaMakerResults.Answers.Count > 0)
+            {
+                if (qnaMakerResults.Answers.FirstOrDefault().Score >= 0.75)
+                {
+                    await context.PostAsync(qnaMakerResults.Answers.FirstOrDefault().Answer);
+                } else if (qnaMakerResults.Answers.FirstOrDefault().Score >= 0.5 && qnaMakerResults.Answers.FirstOrDefault().Score < 0.75)
+                {
+                    await context.PostAsync(qnaMakerResults.Answers.FirstOrDefault().Answer);
+                } else if (qnaMakerResults.Answers.FirstOrDefault().Score < 0.5)
+                {
+
+                }
+            }*/
+            
             if (qnaMakerResults.Answers.Count > 0 && qnaMakerResults.Answers.FirstOrDefault().Score > 0.75)
             {
                 await context.PostAsync(qnaMakerResults.Answers.FirstOrDefault().Answer);

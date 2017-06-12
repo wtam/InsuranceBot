@@ -28,7 +28,7 @@ namespace InsuranceBOT
             await context.PostAsync($"I found an answer that might help...{result.Answer}.");
             context.Done(true);
         } */
-        
+
         protected override async Task QnAFeedbackStepAsync(IDialogContext context, QnAMakerResults qnaMakerResults)
         {
             // responding with the top answer when score is above some threshold
@@ -49,18 +49,19 @@ namespace InsuranceBOT
             {
                 var response = "Here is the match from FAQ:  \r\n  Q: " + results.Answers.First().Questions.First() + "  \r\n A: " + results.Answers.First().Answer;
                 await context.PostAsync(response);
-                context.Done(false);
+                context.Done(true);
             }
         } 
 
         // Override to log matched Q&A before ending the dialog
+        /*
         protected override async Task DefaultWaitNextMessageAsync(IDialogContext context, IMessageActivity message, QnAMakerResults results)
         {
             Console.WriteLine("KB Question: " + results.Answers.First().Questions.First());
             Console.WriteLine("KB Answer: " + results.Answers.First().Answer);
             await base.DefaultWaitNextMessageAsync(context, message, results);
             context.Done(true);
-        }
+        } */
 
     }  //FAQDialog
 }  //InsuranceBot

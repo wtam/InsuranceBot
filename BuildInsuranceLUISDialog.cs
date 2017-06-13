@@ -9,6 +9,8 @@ using Microsoft.Bot.Connector;
 using System.Threading;
 using System.Diagnostics;
 
+//Ref: https://github.com/Microsoft/BotBuilder-CognitiveServices/tree/master/CSharp/Samples/QnAMaker
+
 namespace InsuranceBOT
 {
     [Serializable]
@@ -67,7 +69,7 @@ namespace InsuranceBOT
             var answerFound = await result;
             Debug.WriteLine("AfterQnADialog: ", answerFound);
             // we might want to send a message or take some action if no answer was found (false returned)
-            if (answerFound.ToString().Contains("No match"))
+            if (!(bool)answerFound)
             {
                 Debug.WriteLine("AfterQnADialog: no answer found");
                 await context.PostAsync("I’m not sure what you want. Try another query.");

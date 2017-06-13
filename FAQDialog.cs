@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Builder.CognitiveServices.QnAMaker;
 using System.Linq;
+using System.Diagnostics;
 
 //Note: https://github.com/garypretty/botframework/tree/master/QnAMakerDialog
 
@@ -53,6 +54,7 @@ namespace InsuranceBOT
             } else
             {
                 await context.PostAsync("No match found from FAQ");
+                Debug.WriteLine("answer count = 0");
             }
             context.Done(true);
         } 

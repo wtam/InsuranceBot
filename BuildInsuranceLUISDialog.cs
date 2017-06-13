@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
 using System.Threading;
+using System.Diagnostics;
 
 namespace InsuranceBOT
 {
@@ -64,11 +65,11 @@ namespace InsuranceBOT
         private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
         {
             var answerFound = await result;
-            Console.WriteLine("AfterQnADialog: ", answerFound);
+            Debug.WriteLine("AfterQnADialog: ", answerFound);
             // we might want to send a message or take some action if no answer was found (false returned)
             if (answerFound.ToString().Contains("No match"))
             {
-                Console.WriteLine("AfterQnADialog: no answer found");
+                Debug.WriteLine("AfterQnADialog: no answer found");
                 await context.PostAsync("I’m not sure what you want. Try another query.");
             }          
             context.Wait(MessageReceived);

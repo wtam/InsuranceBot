@@ -49,8 +49,9 @@ namespace InsuranceBOT
             {
                 var response = "Here is the match from FAQ:  \r\n  Q: " + results.Answers.First().Questions.First() + "  \r\n A: " + results.Answers.First().Answer;
                 await context.PostAsync(response);
-                context.Done(true);
+                //context.Done(true);
             }
+            context.Done(true);
         } 
 
         // Override to log matched Q&A before ending the dialog

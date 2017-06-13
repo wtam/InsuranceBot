@@ -16,20 +16,22 @@ namespace InsuranceBOT
     //[QnAMaker("21014d33da9a4762be6858acb4d4b335", "29ab0dd8-cab0-43e6-8128-fb5bcb41fa99")] 
     public class FAQDialog : QnAMakerDialog
     {
-        /*    
+            
         protected override async Task QnAFeedbackStepAsync(IDialogContext context, QnAMakerResults qnaMakerResults)
         {
             // responding with the top answer when score is above some threshold
             if (qnaMakerResults.Answers.Count > 0 && qnaMakerResults.Answers.FirstOrDefault().Score > 0.75)
             {
-                await context.PostAsync(qnaMakerResults.Answers.FirstOrDefault().Answer);
+                //await context.PostAsync(qnaMakerResults.Answers.FirstOrDefault().Answer);
+                var response = "Something match from FAQ:  \r\n  Q: " + qnaMakerResults.Answers.First().Questions.First() + "  \r\n A: " + qnaMakerResults.Answers.First().Answer;
+                await context.PostAsync(response);
             }
             else
             {
                 await base.QnAFeedbackStepAsync(context, qnaMakerResults);
             }
             context.Done(true);
-        } */
+        } 
 
         // Override to also include the knowledgebase question with the answer on confident matches
         protected override async Task RespondFromQnAMakerResultAsync(IDialogContext context, IMessageActivity message, QnAMakerResults results)

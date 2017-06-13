@@ -64,9 +64,9 @@ namespace InsuranceBOT
         private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
         {
             var answerFound = await result;
-            Console.WriteLine("AfterQnADialog: call back");
+            Console.WriteLine("AfterQnADialog: ", answerFound);
             // we might want to send a message or take some action if no answer was found (false returned)
-            if (answerFound  == null)
+            if (answerFound.ToString().Contains("No match"))
             {
                 Console.WriteLine("AfterQnADialog: no answer found");
                 await context.PostAsync("I’m not sure what you want. Try another query.");

@@ -25,12 +25,13 @@ namespace InsuranceBOT
                 //await context.PostAsync(qnaMakerResults.Answers.FirstOrDefault().Answer);
                 var response = "Something match from FAQ:  \r\n  Q: " + qnaMakerResults.Answers.First().Questions.First() + "  \r\n A: " + qnaMakerResults.Answers.First().Answer;
                 await context.PostAsync(response);
+                context.Done(true);
             }
             else
             {
                 await base.QnAFeedbackStepAsync(context, qnaMakerResults);
+                context.Done(false);
             }
-            context.Done(true);
         } 
 
         // Override to also include the knowledgebase question with the answer on confident matches

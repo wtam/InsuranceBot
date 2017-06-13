@@ -50,6 +50,9 @@ namespace InsuranceBOT
                 var response = "Here is the match from FAQ:  \r\n  Q: " + results.Answers.First().Questions.First() + "  \r\n A: " + results.Answers.First().Answer;
                 await context.PostAsync(response);
                 //context.Done(true);
+            } else
+            {
+                await context.PostAsync("No match found from FAQ");
             }
             context.Done(true);
         } 

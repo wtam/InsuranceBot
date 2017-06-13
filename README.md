@@ -1,2 +1,2 @@
 # InsuranceBotForDemo
-LUIS + FormFlow
+LUIS + FormFlow + QnA Maker

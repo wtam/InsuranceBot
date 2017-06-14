@@ -30,8 +30,8 @@ namespace InsuranceBOT
             else
             {
                 await base.QnAFeedbackStepAsync(context, qnaMakerResults);
-                context.Done(false);
-            }
+                context.Done(true);
+            } 
         } 
 
         // Override to also include the knowledgebase question with the answer on confident matches

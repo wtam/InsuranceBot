@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
 using System.Threading;
 using System.Diagnostics;
+using Microsoft.Bot.Builder.CognitiveServices.QnAMaker;
 
 //Ref: https://github.com/Microsoft/BotBuilder-CognitiveServices/tree/master/CSharp/Samples/QnAMaker
 
@@ -64,12 +65,13 @@ namespace InsuranceBOT
             await context.Forward(qnadialog, AfterQnADialog, messageToForward, CancellationToken.None);
         }
 
-        private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
+        //private async Task AfterQnADialog(IDialogContext context, IAwaitable<object> result)
+        private async Task AfterQnADialog(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            var answerFound = await result;
-            Debug.WriteLine("AfterQnADialog: ", answerFound);
+            //var answerFound = await result;
+            Debug.WriteLine("AfterQnADialog: ");
             // we might want to send a message or take some action if no answer was found (false returned)
-            if (!(bool)answerFound)
+            if (result.Equals(null))
             {
                 Debug.WriteLine("AfterQnADialog: no answer found");
                 await context.PostAsync("I’m not sure what you want. Try another query.");

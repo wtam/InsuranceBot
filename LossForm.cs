@@ -38,7 +38,7 @@ namespace InsuranceBoT
         {
             OnCompletionAsyncDelegate<LossForm> wrapUpRequest = async (context, state) =>
             {
-                string wrapUpMessage = "Your loss[" + state.LossType + "] on "+ state.LossDate.Value.ToShortDateString() + " against Policy number " + state.PolicyNumber + @"is being processed. You will also receive a mail in your registered mail ID once this is initiated.Thank you for using our Bot service.";
+                string wrapUpMessage = "Your loss[" + state.LossType + "] on "+ state.LossDate.Value.ToShortDateString() + " against Policy number " + state.PolicyNumber + @"is being processed. You will also receive a mail in your registered mail ID once this is initiated.";
                 await context.PostAsync(wrapUpMessage);
 
             };

@@ -9,6 +9,8 @@ using Microsoft.Bot.Connector;
 using System.Threading;
 using System.Diagnostics;
 using Microsoft.Bot.Builder.CognitiveServices.QnAMaker;
+using System.Collections.Generic;
+using System.Web;
 
 //Ref: https://github.com/Microsoft/BotBuilder-CognitiveServices/tree/master/CSharp/Samples/QnAMaker
 
@@ -23,6 +25,23 @@ namespace InsuranceBOT
         [LuisIntent("LossReportForm")]
         public async Task LossReportHandler(IDialogContext context, LuisResult result)
         {
+            /*
+            var replyToConversation = context.MakeMessage();
+            replyToConversation.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            CardAction plButton = new CardAction()
+            {
+                ///Value = $"{System.Configuration.ConfigurationManager.AppSettings["AppWebSite"]}/Home/Login?userid={HttpUtility.UrlEncode(context.Activity.From.Id)}",
+                Value = $"{System.Configuration.ConfigurationManager.AppSettings["AppWebSite"]}",
+                Type = "signin",
+                Title = "Authentication Required"
+            };
+            cardButtons.Add(plButton);
+            SigninCard plCard = new SigninCard("Login to proceed", new List<CardAction>() { plButton });
+            Attachment plAttachment = plCard.ToAttachment();
+            replyToConversation.Attachments.Add(plAttachment);
+            await context.PostAsync(replyToConversation);
+            */
             await context.PostAsync("XXX Insurance (LUIS): Sorry to know about your loss, I just need few piece of info to get your report file");
             var form = new FormDialog<LossForm>(
                 new LossForm(),
@@ -50,10 +69,16 @@ namespace InsuranceBOT
             else
             {
                 //call the LossForm service to complete the form fill
-                var message = $"Thanks! for using our Bot service.";
+                var message = $"Thanks! for using our Bot to submit Form Services.";
                 await context.PostAsync(message);
             }
             context.Wait(this.MessageReceived);
+        }
+
+        [LuisIntent("InvestmentEnquiry")]
+        public async Task InvestmentEnquiryHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
+        {
+            await context.PostAsync("LUIS Invsetment Enquiry detected");
         }
 
         [LuisIntent("None")]

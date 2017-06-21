@@ -47,8 +47,6 @@ namespace InsuranceBOTDemo
                     var output = await TranslateText(input, targetLang, accessToken);
                     Debug.WriteLine(output);
                     activity.Text = output;
-                    //Activity reply = activity.CreateReply($"Your text translation to English is => '{output}'");
-                    //await connector.Conversations.ReplyToActivityAsync(reply);
                 }).Wait();
 
                 /// without LUIS 
@@ -66,6 +64,7 @@ namespace InsuranceBOTDemo
             return response;
         }
 
+        //For TextTranslator
         static async Task<string> GetAuthenticationToken(string key)
         {
             string endpoint = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";

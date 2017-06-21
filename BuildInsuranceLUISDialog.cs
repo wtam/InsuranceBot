@@ -12,6 +12,18 @@ using Microsoft.Bot.Builder.CognitiveServices.QnAMaker;
 using System.Collections.Generic;
 using System.Web;
 
+// Important resources
+// https://github.com/richdizz/BotAuth/tree/master/CSharp 
+
+// https://blog.mastykarz.nl/configuring-multi-tenant-authentication-azure-app-service-authentication-options/
+// http://www.matvelloso.com/2015/01/30/troubleshooting-common-azure-active-directory-errors/
+using BotAuth.AADv2;
+using BotAuth.Dialogs;
+using BotAuth.Models;
+using BotAuth;
+using System.Configuration;
+using System.Net.Http;
+
 //Ref: https://github.com/Microsoft/BotBuilder-CognitiveServices/tree/master/CSharp/Samples/QnAMaker
 
 namespace InsuranceBOT
@@ -22,27 +34,12 @@ namespace InsuranceBOT
     [LuisModel("7f5f9306-17a5-45ef-9daf-6eac1b816da5", "f5a1c2fc5ea0407ba30aed8e2e27187c")]
     public class BuildInsuranceLUISDialog : LuisDialog<object>
     {
+       
         [LuisIntent("LossReportForm")]
         public async Task LossReportHandler(IDialogContext context, LuisResult result)
-        {
-            /*
-            var replyToConversation = context.MakeMessage();
-            replyToConversation.Attachments = new List<Attachment>();
-            List<CardAction> cardButtons = new List<CardAction>();
-            CardAction plButton = new CardAction()
-            {
-                ///Value = $"{System.Configuration.ConfigurationManager.AppSettings["AppWebSite"]}/Home/Login?userid={HttpUtility.UrlEncode(context.Activity.From.Id)}",
-                Value = $"{System.Configuration.ConfigurationManager.AppSettings["AppWebSite"]}",
-                Type = "signin",
-                Title = "Authentication Required"
-            };
-            cardButtons.Add(plButton);
-            SigninCard plCard = new SigninCard("Login to proceed", new List<CardAction>() { plButton });
-            Attachment plAttachment = plCard.ToAttachment();
-            replyToConversation.Attachments.Add(plAttachment);
-            await context.PostAsync(replyToConversation);
-            */
-            await context.PostAsync("XXX Insurance (LUIS): Sorry to know about your loss, I just need few piece of info to get your report file");
+        {   
+     
+            await context.PostAsync("XXX Insurance (LUIS): Loss Form");
             var form = new FormDialog<LossForm>(
                 new LossForm(),
                 LossForm.BuildForm,
@@ -78,9 +75,55 @@ namespace InsuranceBOT
         [LuisIntent("InvestmentEnquiry")]
         public async Task InvestmentEnquiryHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
         {
-            await context.PostAsync("LUIS Invsetment Enquiry detected");
+            await context.PostAsync("LUIS Invsetment Enquiry: ........");
         }
 
+        public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> item)
+        {
+            var message = await item;
+
+            Debug.WriteLine("am I here");
+            // Initialize AuthenticationOptions and forward to AuthDialog for token
+            AuthenticationOptions options = new AuthenticationOptions()
+            {
+                Authority = ConfigurationManager.AppSettings["aad:Authority"],
+                ClientId = ConfigurationManager.AppSettings["aad:ClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["aad:ClientSecret"],
+                Scopes = new string[] { "User.Read" },
+                RedirectUrl = ConfigurationManager.AppSettings["aad:Callback"]
+            };
+            await context.Forward(new AuthDialog(new MSALAuthProvider(), options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
+            {
+                var result = await authResult;
+                // Use token to call into service
+                var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
+                await authContext.PostAsync($"I'm a simple bot that doesn't do much, but I know your name is {json.Value<string>("displayName")} and your UPN is {json.Value<string>("userPrincipalName")}");
+            }, message, CancellationToken.None);
+        }
+
+        [LuisIntent("AccountOperation")]
+        public async Task AccountOperationHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
+        {
+            await context.PostAsync("LUIS Account Operation:");
+            var replyToConversation = context.MakeMessage();
+            replyToConversation.Attachments = new List<Attachment>();
+            List<CardAction> cardButtons = new List<CardAction>();
+            CardAction plButton = new CardAction()
+            {
+                ///Value = $"{System.Configuration.ConfigurationManager.AppSettings["AppWebSite"]}/Home/Login?userid={HttpUtility.UrlEncode(context.Activity.From.Id)}",
+                Value = $"{System.Configuration.ConfigurationManager.AppSettings["AppWebSite"]}",
+                Type = "signin",
+                Title = "Authentication Required"
+            };
+            cardButtons.Add(plButton);
+            SigninCard plCard = new SigninCard("Login to proceed", new List<CardAction>() { plButton });
+            Attachment plAttachment = plCard.ToAttachment();
+            replyToConversation.Attachments.Add(plAttachment);
+            await context.PostAsync(replyToConversation);
+            context.Wait(MessageReceivedAsync);
+        }
+
+        // Everthing else, ask FAQ
         [LuisIntent("None")]
         public async Task NoneHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
         {

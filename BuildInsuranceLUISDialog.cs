@@ -97,7 +97,7 @@ namespace InsuranceBOT
                 var result = await authResult;
                 // Use token to call into service
                 var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
-                await authContext.PostAsync($"I'm a simple bot that doesn't do much, but I know your name is {json.Value<string>("displayName")} and your UPN is {json.Value<string>("userPrincipalName")}");
+                await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");
             }, message, CancellationToken.None);
         }
 

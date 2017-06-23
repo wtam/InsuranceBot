@@ -99,6 +99,8 @@ namespace InsuranceBOT
                 var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
                 await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");
             }, message, CancellationToken.None);
+            //pass back to root dialog
+            context.Done(true);
         }
 
         [LuisIntent("AccountOperation")]

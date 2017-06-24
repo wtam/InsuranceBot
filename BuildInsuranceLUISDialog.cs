@@ -105,15 +105,16 @@ namespace InsuranceBOT
       
             //logout
             await loginMicrosoftOnlineCom.Logout(options, context);
-            context.Done(false);
+            ///context.Done(false);
         }
 
         [LuisIntent("AccountOperation")]
         public async Task AccountOperationHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
         {
             await context.PostAsync("LUIS Account Operation:");
+
             /*
-            var replyToConversation = context.MakeMessage();
+            var replyToConversation = context.MakeMessage();          
             replyToConversation.Attachments = new List<Attachment>();
             List<CardAction> cardButtons = new List<CardAction>();
             CardAction plButton = new CardAction()
@@ -128,11 +129,9 @@ namespace InsuranceBOT
             Attachment plAttachment = plCard.ToAttachment();
             replyToConversation.Attachments.Add(plAttachment);
             await context.PostAsync(replyToConversation); */
-            //context.Wait(MessageReceivedAsync);
-            //context.Done(true);
             await MessageReceivedAsync(context, message);
             //pass back to root dialog
-            context.Done(true);
+            ///context.Done(true);
         }
 
         // Everthing else, ask FAQ

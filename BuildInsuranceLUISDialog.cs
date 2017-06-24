@@ -80,8 +80,7 @@ namespace InsuranceBOT
 
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> item)
         {
-            ///var message = await item;
-            var message = (Activity)context.Activity;
+            var message = await item;
 
             Debug.WriteLine("am I here");
             // Initialize AuthenticationOptions and forward to AuthDialog for token

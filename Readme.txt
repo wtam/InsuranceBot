@@ -28,3 +28,5 @@ App Password: f5bSOLqPXEjBbjsDmUbtMdB
 		Note : comment out MessageController the without LUIS
 
  4. Run the code and use "Hi" and "I like to file a lost report" to test LUIS is able to understand and pass to formflow
+ 
+ 5. say "What is my account balance?" to trigger the AccountOpertion Luis handler that will use AAD V2 (see Web.config)

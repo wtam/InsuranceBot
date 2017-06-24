@@ -92,19 +92,19 @@ namespace InsuranceBOT
                 Scopes = new string[] { "User.Read" },
                 RedirectUrl = ConfigurationManager.AppSettings["aad:Callback"]
             }; 
-            ////var loginMicrosoftOnlineCom = new MSALAuthProvider();
-            await context.Forward(new AuthDialog(new MSALAuthProvider(), options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
-            ////await context.Forward(new AuthDialog(loginMicrosoftOnlineCom, options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
+            var loginMicrosoftOnlineCom = new MSALAuthProvider();
+            ///await context.Forward(new AuthDialog(new MSALAuthProvider(), options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
+            await context.Forward(new AuthDialog(loginMicrosoftOnlineCom, options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
             {
                 var result = await authResult;
                 // Use token to call into service
                 var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
                 await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");     
-                ////await authContext.PostAsync("Welcome back" + result.UserName + " you've login as " + result.UserUniqueId + " Account/transaction can operate now....");               
+                ///await authContext.PostAsync("Welcome back" + result.UserName + " you've login as " + result.UserUniqueId + " Account/transaction can operate now....");               
             }, message, CancellationToken.None);
       
             //logout
-            ////await loginMicrosoftOnlineCom.Logout(options, context);
+            await loginMicrosoftOnlineCom.Logout(options, context);
             context.Done(false);
         }
 
@@ -130,7 +130,7 @@ namespace InsuranceBOT
             await context.PostAsync(replyToConversation); */
             //context.Wait(MessageReceivedAsync);
             //context.Done(true);
-            await this.MessageReceivedAsync(context, message);
+            await MessageReceivedAsync(context, message);
             //pass back to root dialog
             context.Done(true);
         }

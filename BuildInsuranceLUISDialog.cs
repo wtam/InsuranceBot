@@ -99,12 +99,13 @@ namespace InsuranceBOT
                 var result = await authResult;
                 // Use token to call into service
                 var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
-                await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");             
+                await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");     
+                ///await authContext.PostAsync("Welcome back" + result.UserName + " you've login as " + result.UserUniqueId + " Account/transaction can operate now....");               
             }, message, CancellationToken.None);
-
-            //pass back to root dialog
+      
+            //logout
             await loginMicrosoftOnlineCom.Logout(options, context);
-            context.Done(true);
+            context.Done(false);
         }
 
         [LuisIntent("AccountOperation")]
@@ -127,8 +128,11 @@ namespace InsuranceBOT
             Attachment plAttachment = plCard.ToAttachment();
             replyToConversation.Attachments.Add(plAttachment);
             await context.PostAsync(replyToConversation); */
-            ///context.Wait(MessageReceivedAsync);
+            //context.Wait(MessageReceivedAsync);
+            //context.Done(true);
             await this.MessageReceivedAsync(context, message);
+            //pass back to root dialog
+            context.Done(true);
         }
 
         // Everthing else, ask FAQ

@@ -112,6 +112,7 @@ namespace InsuranceBOT
         public async Task AccountOperationHandler(IDialogContext context, IAwaitable<IMessageActivity> message, LuisResult result)
         {
             await context.PostAsync("LUIS Account Operation:");
+            /*
             var replyToConversation = context.MakeMessage();
             replyToConversation.Attachments = new List<Attachment>();
             List<CardAction> cardButtons = new List<CardAction>();
@@ -126,8 +127,9 @@ namespace InsuranceBOT
             SigninCard plCard = new SigninCard("Login to proceed", new List<CardAction>() { plButton });
             Attachment plAttachment = plCard.ToAttachment();
             replyToConversation.Attachments.Add(plAttachment);
-            await context.PostAsync(replyToConversation);
-            context.Wait(MessageReceivedAsync);
+            await context.PostAsync(replyToConversation); */
+            ///context.Wait(MessageReceivedAsync);
+            await this.MessageReceivedAsync(context, message);
         }
 
         // Everthing else, ask FAQ

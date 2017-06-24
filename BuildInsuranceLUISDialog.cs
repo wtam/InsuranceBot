@@ -98,9 +98,9 @@ namespace InsuranceBOT
             {
                 var result = await authResult;
                 // Use token to call into service
-                var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
-                await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");     
-                ///await authContext.PostAsync("Welcome back" + result.UserName + " you've login as " + result.UserUniqueId + " Account/transaction can operate now....");               
+                ///var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
+                ///await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");     
+                await authContext.PostAsync("Welcome back" + result.UserName + " you've login as " + result.UserUniqueId + " Account/transaction can operate now....");               
             }, message, CancellationToken.None);
       
             //logout

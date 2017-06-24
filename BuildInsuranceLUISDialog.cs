@@ -80,7 +80,8 @@ namespace InsuranceBOT
 
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> item)
         {
-            var message = await item;
+            ///var message = await item;
+            var message = (Activity)context.Activity;
 
             Debug.WriteLine("am I here");
             // Initialize AuthenticationOptions and forward to AuthDialog for token
@@ -91,7 +92,7 @@ namespace InsuranceBOT
                 ClientSecret = ConfigurationManager.AppSettings["aad:ClientSecret"],
                 Scopes = new string[] { "User.Read" },
                 RedirectUrl = ConfigurationManager.AppSettings["aad:Callback"]
-            };
+            }; 
             var loginMicrosoftOnlineCom = new MSALAuthProvider();
             ////await context.Forward(new AuthDialog(new MSALAuthProvider(), options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
             await context.Forward(new AuthDialog(loginMicrosoftOnlineCom, options), async (IDialogContext authContext, IAwaitable<AuthResult> authResult) =>
@@ -99,8 +100,9 @@ namespace InsuranceBOT
                 var result = await authResult;
                 // Use token to call into service
                 var json = await new HttpClient().GetWithAuthAsync(result.AccessToken, "https://graph.microsoft.com/v1.0/me");
-                await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");
+                await authContext.PostAsync($"Welcome back {json.Value<string>("displayName")} , you've login as {json.Value<string>("userPrincipalName")}. Account/transaction can operation now....");             
             }, message, CancellationToken.None);
+
             //pass back to root dialog
             await loginMicrosoftOnlineCom.Logout(options, context);
             context.Done(true);

@@ -46,6 +46,10 @@
       <HintPath>packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>packages\Autofac.WebApi.3.1.0\lib\net40\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="BotAuth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\BotAuth.AADv2.3.8.1-alpha\lib\BotAuth.dll</HintPath>
       <Private>True</Private>

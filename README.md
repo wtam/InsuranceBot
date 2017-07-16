@@ -1,2 +1,2 @@
-# InsuranceBotForDemo
-LUIS + FormFlow + QnA Maker
+ # InsuranceBotForDemo
+LUIS + FormFlow + QnA Maker + translator + AAD integration

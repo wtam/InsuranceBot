@@ -84,9 +84,20 @@ namespace InsuranceBOTDemo
             //turn category using neural network
             string query = $"?text={System.Net.WebUtility.UrlEncode(inputText)}&to={language}&contentType=text/plain&category=generalnn";
 
+            string urlDetectLang = "http://api.microsofttranslator.com/v2/Http.svc/detect";
+            //turn category using neural network
+            string queryDetectLang = $"?text={System.Net.WebUtility.UrlEncode(inputText)}&contentType=text/plain";
+
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                //Lets detect the user input lang
+                var responseDetectLang = await client.GetAsync(urlDetectLang + queryDetectLang);
+                var resultDetectLang = await responseDetectLang.Content.ReadAsStringAsync();
+                var TextDetectLang = XElement.Parse(resultDetectLang).Value;
+                Debug.WriteLine("Detect Lang: " + TextDetectLang);
+
+                //Automatic translate wiht NN turn on
                 var response = await client.GetAsync(url + query);
                 var result = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)

@@ -17,7 +17,8 @@ namespace InsuranceBOT
     //[QnAMaker("21014d33da9a4762be6858acb4d4b335", "29ab0dd8-cab0-43e6-8128-fb5bcb41fa99")] 
 
     /// CitiBank onlineBank, Loan, mortgage FAQ
-    [QnAMaker("21014d33da9a4762be6858acb4d4b335", "ac873e67-cfdb-44c9-a051-048a82d0ae77", "I don't understand this right now! Try another query!", 0.50, 3)]
+    ///[QnAMaker("21014d33da9a4762be6858acb4d4b335", "ac873e67-cfdb-44c9-a051-048a82d0ae77", "I don't understand this right now! Try another query!", 0.50, 3)]
+    [QnAMaker("21014d33da9a4762be6858acb4d4b335", "ac873e67-cfdb-44c9-a051-048a82d0ae77")]
     public class FAQDialog : QnAMakerDialog
     {
             
